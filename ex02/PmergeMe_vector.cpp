@@ -27,33 +27,80 @@ static int binaryInsert(vector<int> &result, int value, int left, int right) {
 	if (value < result[mid]) {
 		return binaryInsert(result, value, left, mid);
 	} else {
-		return binaryInsert(result, value, mid + 1, right) + mid + 1;
+		return binaryInsert(result, value, mid + 1, right);
 	}
 }
 
-static vector<pair> doSort(vector<int>& src) {
-	vector<pair> pairs(ceil(src.size() / 2.0));
-	for (size_t i = 0; i < src.size(); i += 2) {
-		pairs.at(i).first = max(src.at(i), src.at(i + 1));
-		pairs.at(i).second = min(src.at(i), src.at(i + 1));
+int getInt(const int& v) {
+	return v;
+}
+
+int getFirst(const pair& p) {
+	return p.first;
+}
+
+vector<int> PmergeMe::sortAndReportOrder (vector<int>& src) {
+	#ifdef DEBUG
+	cout << "sortAndReportOrder called with: ";
+	for (size_t i = 0; i < src.size(); i++ ) {
+		cout << src.at(i) << " ";
 	}
-	doSort(pairs.begin(), pairs.end());
-	vector<int> result(pairs.size() + 1);
-	result.at(0) = pairs[0].second;
-	for (size_t i = 1; i <= pairs.size(); ++i) {
-		result.at(i) = pairs[i - 1].first;
+	cout << endl;
+	#endif
+
+	vector<int> resultOrder(src.size(), 0);
+	if (src.size() == 1) {
+		return (resultOrder);
 	}
-	for (size_t i = 1; i <= ceil(_size / 2); ++i) {
-		int j = binaryInsert(result, pairs[tk(i)].second, 0, i);
+	if (src.size() == 2) {
+		resultOrder.at(1) = 1;
+		if (src.at(0) > src.at(1)) {
+			std::swap(resultOrder.at(0), resultOrder.at(1));
+		}
+		return (resultOrder);
+	}
+	vector<vector<int> > pairs(src.size() / 2);
+	for (size_t i = 0; i < src.size() - src.size() % 2; i += 2) {
+		pairs.at(i/2) = vector<int>(2);
+		pairs.at(i/2).at(0) = max(src.at(i), src.at(i + 1));
+		pairs.at(i/2).at(1) = min(src.at(i), src.at(i + 1));
+	}
+	vector<int> tops(pairs.size());
+	for (size_t i = 0; i < pairs.size(); ++i) {
+		tops.at(i) = pairs.at(i).at(0);
+	}
+	vector<int> order = sortAndReportOrder(tops);
+
+	tops.insert(tops.begin(), pairs.at(order.at(0)).at(1)); // b1 smallest
+	resultOrder.insert(resultOrder.begin(), order.at(0) * 2 + 1);
+
+	#ifdef DEBUG
+	cout << "Result vector after first pass: ";
+	for (size_t i = 0; i < tops.size(); ++i) {
+		cout << tops.at(i) << " ";
+	}
+	cout << endl;
+	#endif
+
+	if (src.size() % 2 == 1) {
+		pairs.push_back(vector<int>(2, src.at(src.size() - 1)));
+		order.push_back(pairs.size() - 1);
+	} // top element will be ignored
+	for (size_t i = 1; i < pairs.size(); ++i) {
+		int from = outsiderIdx(i, pairs.size());
 		#ifdef DEBUG
-		cout << "Inserting " << pairs[tk(i)].second << " at position " << j << endl;
+		cout << "Inserting " << i << "th outsider: idx " << from << endl;
 		#endif
-		j = binaryInsert(result, pairs[tk(i) - 1].second, 0, i);
+		int who = pairs.at(order.at(from)).at(1);
+		int where = binaryInsert(tops, who, 0, i * 2);
+		resultOrder.insert(resultOrder.begin() + where, order.at(from));
 		#ifdef DEBUG
-		cout << "Inserting " << pairs[tk(i)].second << " at position " << j << endl;
+		cout << "Inserting " << who << " at position " << where << endl;
 		#endif
 	}
-	
+
+	src = tops;
+	return (resultOrder);
 }
 
 vector<int> PmergeMe::mergeSort_vector(char** begin, char** end) {
@@ -61,5 +108,6 @@ vector<int> PmergeMe::mergeSort_vector(char** begin, char** end) {
 	for (size_t i = 0; begin != end; ++begin, ++i) {
 		vec.at(i) = atoi(*begin);
 	}
-	doSort(vec.begin(), vec.end(), );
+	sortAndReportOrder(vec);
+	return (vec);
 }

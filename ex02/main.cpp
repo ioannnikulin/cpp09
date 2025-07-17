@@ -10,10 +10,10 @@ using std::invalid_argument;
 using std::string;
 
 static void tests() {
-	char *args[] = { (char*)"3", (char*)"5", (char*)"9", (char*)"7", (char*)"4" };
-	(void)args;
 	PmergeMe sorter;
-	sorter.testTk();
+	sorter.testJacobstahl();
+	char *args[] = { (char*)"3", (char*)"5", (char*)"9", (char*)"7", (char*)"4" };
+	sorter.mergeSort(args, args + 5);
 }
 
 int main(int argc, char **argv) {
