@@ -16,6 +16,7 @@ using std::invalid_argument;
 using std::list;
 using std::max;
 using std::min;
+using std::ostream;
 
 PmergeMe::PmergeMe() {
 }
@@ -49,9 +50,9 @@ void PmergeMe::mergeSort(char** begin, char** end) {
 	std::sort(_stl_sorted.begin(), _stl_sorted.end());
 	fillJacobstahl();
 	
-	vector<int> sorted = mergeSort_vector(begin, end);
+	vector<int> sorted = vector_mergeSort(begin, end);
 	assertSorted(sorted);
-	sorted = mergeSort_list(begin, end);
+	sorted = list_mergeSort(begin, end);
 	assertSorted(sorted);
 	cout << "After: ";
 	for (size_t i = 0; i < _size; i ++) {
@@ -144,4 +145,13 @@ void PmergeMe::testJacobstahl() const {
 	for (int i = 0; i < 21; i ++) {
 		assert(test._jacobstahl.at(i) == expected.at(i));
 	}
+}
+
+bool intm::operator<(const intm& other) const {
+	return v < other.v;
+}
+
+ostream& operator<<(ostream& os, const intm& obj) {
+	os << obj.v;
+	return os;
 }

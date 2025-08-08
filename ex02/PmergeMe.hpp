@@ -4,9 +4,16 @@
 #include <cstddef>
 #include <map>
 #include <vector>
+#include <ostream>
 
-using std::map;
+using std::ostream;
 using std::vector;
+
+struct intm {
+	int v;
+	size_t origPos;
+	bool operator<(const intm& other) const;
+};
 
 class PmergeMe
 {
@@ -24,9 +31,9 @@ private:
 	static const size_t VECTOR = 0;
 	static const size_t LIST = 1;
 	
-	vector<int> mergeSort_vector(char** begin, char** end);
-	vector<int> sortAndReportOrder (vector<int>& src);
-	vector<int> mergeSort_list(char** begin, char** end);
+	vector<int> vector_mergeSort(char** begin, char** end);
+	void vector_doSort(vector<intm>& src);
+	vector<int> list_mergeSort(char** begin, char** end);
 
 	void fillJacobstahl();
 	int outsiderIdx(int idx, size_t size);
@@ -39,6 +46,7 @@ public:
 	void testJacobstahl() const;
 };
 
+/*
 struct pair { // because we used std::pair in btc, and you can't make vector<int[2]>
 	int first;
 	int second;
@@ -46,5 +54,8 @@ struct pair { // because we used std::pair in btc, and you can't make vector<int
 		return first < other.first;
 	}
 };
+*/
+
+std::ostream& operator<<(std::ostream& os, const intm& obj);
 
 #endif

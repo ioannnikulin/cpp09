@@ -31,48 +31,42 @@ static int binaryInsert(vector<int> &result, int value, int left, int right) {
 	}
 }
 
-int getInt(const int& v) {
-	return v;
-}
-
-int getFirst(const pair& p) {
-	return p.first;
-}
-
-vector<int> PmergeMe::sortAndReportOrder (vector<int>& src) {
+void PmergeMe::vector_doSort(vector<intm>& src) {
 	#ifdef DEBUG
-	cout << "sortAndReportOrder called with: ";
+	cout << "sort called with: ";
 	for (size_t i = 0; i < src.size(); i++ ) {
 		cout << src.at(i) << " ";
 	}
 	cout << endl;
 	#endif
 
-	vector<int> resultOrder(src.size(), 0);
 	if (src.size() == 1) {
-		return (resultOrder);
+		return ;
 	}
 	if (src.size() == 2) {
-		resultOrder.at(1) = 1;
-		if (src.at(0) > src.at(1)) {
-			std::swap(resultOrder.at(0), resultOrder.at(1));
+		if (src.at(1) < src.at(0)) {
+			std::swap(src.at(0), src.at(1));
+			std::swap(src.at(0).origPos, src.at(1).origPos);
 		}
-		return (resultOrder);
+		return ;
 	}
-	vector<vector<int> > pairs(src.size() / 2);
+	vector<vector<intm> > pairs(src.size() / 2);
 	for (size_t i = 0; i < src.size() - src.size() % 2; i += 2) {
-		pairs.at(i/2) = vector<int>(2);
+		pairs.at(i/2) = vector<intm>(2);
 		pairs.at(i/2).at(0) = max(src.at(i), src.at(i + 1));
 		pairs.at(i/2).at(1) = min(src.at(i), src.at(i + 1));
 	}
-	vector<int> tops(pairs.size());
+	vector<intm> tops(pairs.size());
 	for (size_t i = 0; i < pairs.size(); ++i) {
 		tops.at(i) = pairs.at(i).at(0);
 	}
-	vector<int> order = sortAndReportOrder(tops);
+	vector_doSort(tops);
 
-	tops.insert(tops.begin(), pairs.at(order.at(0)).at(1)); // b1 smallest
-	resultOrder.insert(resultOrder.begin(), order.at(0) * 2 + 1);
+	tops.insert(tops.begin(), pairs.at(tops.at(0).origPos).at(1)); // b1 smallest
+/*	for (size_t i = 0; i < order.size(); ++i) {
+		origins.at(i) = order.at(i) * 2;
+	}
+	origins.insert(origins.begin(), order.at(0) * 2 + 1);
 
 	#ifdef DEBUG
 	cout << "Result vector after first pass: ";
@@ -93,21 +87,31 @@ vector<int> PmergeMe::sortAndReportOrder (vector<int>& src) {
 		#endif
 		int who = pairs.at(order.at(from)).at(1);
 		int where = binaryInsert(tops, who, 0, i * 2);
-		resultOrder.insert(resultOrder.begin() + where, order.at(from));
+		origins.insert(origins.begin() + where, order.at(from));
 		#ifdef DEBUG
 		cout << "Inserting " << who << " at position " << where << endl;
+		cout << "Result vector after " << i << "th pass: ";
+		for (size_t i = 0; i < tops.size(); ++i) {
+			cout << tops.at(i) << " ";
+		}
+		cout << endl;
 		#endif
 	}
 
 	src = tops;
-	return (resultOrder);
+	return (origins);*/
 }
 
-vector<int> PmergeMe::mergeSort_vector(char** begin, char** end) {
-	vector<int> vec(_size);
+vector<int> PmergeMe::vector_mergeSort(char** begin, char** end) {
+	vector<intm> vec(_size);
 	for (size_t i = 0; begin != end; ++begin, ++i) {
-		vec.at(i) = atoi(*begin);
+		vec.at(i).v = atoi(*begin);
+		vec.at(i).origPos = i;
 	}
-	sortAndReportOrder(vec);
-	return (vec);
+	vector_doSort(vec);
+	vector<int> sorted(_size);
+	for (size_t i = 0; i < _size; ++i) {
+		sorted.at(i) = vec.at(i).v;
+	}
+	return (sorted);
 }
