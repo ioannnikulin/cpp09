@@ -48,12 +48,11 @@ void PmergeMe::mergeSort(char** begin, char** end) {
 	}
 	cout << endl;
 	std::sort(_stl_sorted.begin(), _stl_sorted.end());
-	fillJacobstahl();
 	
 	vector<int> sorted = vector_mergeSort(begin, end);
 	assertSorted(sorted);
-	sorted = list_mergeSort(begin, end);
-	assertSorted(sorted);
+	//sorted = list_mergeSort(begin, end);
+	//assertSorted(sorted);
 	cout << "After: ";
 	for (size_t i = 0; i < _size; i ++) {
 		cout << sorted[i] << " ";
@@ -61,7 +60,7 @@ void PmergeMe::mergeSort(char** begin, char** end) {
 	cout << endl;
 	cout << "Time to process a range of " << _size << " elements with std::vector: "
 	    << _sortingTime[VECTOR] << " microseconds" << endl;
-	cout << "Time to process a range of " << _size << " elements with std::list:"
+	cout << "Time to process a range of " << _size << " elements with std::list: "
 	    << _sortingTime[LIST] << " microseconds" << endl;
 }
 
@@ -76,32 +75,25 @@ void PmergeMe::assertSorted(vector<int> tgt) const {
 	}
 }
 
-void PmergeMe::fillJacobstahl() {
+void PmergeMe::fillJacobstahl(size_t sz) {
 	_jacobstahl = vector<int>(2, 0);
 	_jacobstahl.at(1) = 1;
 	int pprev = 0;
 	int prev = 0;
 	int cur = 1;
 
-	while (_jacobstahl.size() < _size) {
+	while (_jacobstahl.size() < sz) {
 		pprev = prev;
 		prev = cur;
 		cur = prev + 2 * pprev;
 		int ccur = cur;
 		while (ccur > prev) {
-			if (ccur < (int)_size) {
+			if (ccur < (int)sz) {
 				_jacobstahl.push_back(ccur);
 			}
 			ccur --;
 		}
 	}
-}
-
-int PmergeMe::outsiderIdx(int idx, size_t size) {
-	while(_jacobstahl.at(idx) >= (int)size) {
-		idx ++;
-	}
-	return _jacobstahl.at(idx);
 }
 
 static vector<int> perfect22() {
@@ -133,14 +125,12 @@ static vector<int> perfect22() {
 
 void PmergeMe::testJacobstahl() const {
 	PmergeMe test;
-	test._size = 22;
-	test.fillJacobstahl();
+	test.fillJacobstahl(22);
 	vector<int> expected(perfect22());
 	for (int i = 0; i < 22; i ++) {
 		assert(test._jacobstahl.at(i) == expected.at(i));
 	}
-	test._size = 21;
-	test.fillJacobstahl();
+	test.fillJacobstahl(21);
 	expected.erase(expected.begin() + 12);
 	for (int i = 0; i < 21; i ++) {
 		assert(test._jacobstahl.at(i) == expected.at(i));

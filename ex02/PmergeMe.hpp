@@ -32,11 +32,10 @@ private:
 	static const size_t LIST = 1;
 	
 	vector<int> vector_mergeSort(char** begin, char** end);
-	void vector_doSort(vector<intm>& src);
+	vector<intm> vector_doSort(vector<intm> src, int pad);
 	vector<int> list_mergeSort(char** begin, char** end);
 
-	void fillJacobstahl();
-	int outsiderIdx(int idx, size_t size);
+	void fillJacobstahl(size_t sz);
 
 public:
 	PmergeMe();
@@ -57,5 +56,8 @@ struct pair { // because we used std::pair in btc, and you can't make vector<int
 */
 
 std::ostream& operator<<(std::ostream& os, const intm& obj);
+
+void test99();
+void test3000();
 
 #endif

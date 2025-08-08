@@ -12,9 +12,20 @@ using std::string;
 static void tests() {
 	PmergeMe sorter;
 	sorter.testJacobstahl();
-	//char *args[] = { (char*)"3", (char*)"5", (char*)"9", (char*)"7", (char*)"4" };
-	char *args[] = { (char*)"3", (char*)"5", (char*)"9", (char*)"7", (char*)"4", (char*)"2", (char*)"6", (char*)"8", (char*)"1", (char*)"0" };
-	sorter.mergeSort(args, args + 10);
+	{
+		char* args[] = { (char*)"3", (char*)"5", (char*)"9", (char*)"7"};
+		sorter.mergeSort(args, args + 4);
+	}
+	{
+		char* args[] = { (char*)"3", (char*)"5", (char*)"9", (char*)"7", (char*)"1"};
+		sorter.mergeSort(args, args + 5);
+	}
+	{
+		char* args[] = { (char*)"3", (char*)"5", (char*)"9", (char*)"7", (char*)"4", (char*)"2", (char*)"6", (char*)"8", (char*)"1", (char*)"0" };
+		sorter.mergeSort(args, args + 10);
+	}
+	test99();
+	test3000();
 }
 
 int main(int argc, char **argv) {

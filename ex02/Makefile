@@ -6,7 +6,8 @@ NAME = PmergeMe
 SRCS = main.cpp \
 	PmergeMe.cpp \
 	PmergeMe_vector.cpp \
-	PmergeMe_list.cpp
+	PmergeMe_list.cpp \
+	tests.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
