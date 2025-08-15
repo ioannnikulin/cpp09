@@ -49,30 +49,23 @@ void PmergeMe::mergeSort(char** begin, char** end) {
 	cout << endl;
 	std::sort(_stl_sorted.begin(), _stl_sorted.end());
 	
-	vector<int> sorted = vector_mergeSort(begin, end);
-	assertSorted(sorted);
-	//sorted = list_mergeSort(begin, end);
-	//assertSorted(sorted);
+	vector<int> sortedv = vector_mergeSort(begin, end);
+	assertSorted(sortedv);
+	list<int> sortedl = list_mergeSort(begin, end);
+	assertSorted(sortedl);
 	cout << "After: ";
-	for (size_t i = 0; i < _size; i ++) {
-		cout << sorted[i] << " ";
+	for (
+		list<int>::iterator i = sortedl.begin();
+		i != sortedl.end();
+		++i
+	) {
+		cout << *i << " ";
 	}
 	cout << endl;
 	cout << "Time to process a range of " << _size << " elements with std::vector: "
 	    << _sortingTime[VECTOR] << " microseconds" << endl;
 	cout << "Time to process a range of " << _size << " elements with std::list: "
 	    << _sortingTime[LIST] << " microseconds" << endl;
-}
-
-void PmergeMe::assertSorted(vector<int> tgt) const {
-	for (size_t i = 1; i < _size; ++i) {
-		if (tgt[i] < tgt[i - 1]) {
-			throw std::runtime_error("The array is not sorted");
-		}
-		if (tgt[i] != _stl_sorted[i]) {
-			throw std::runtime_error("The array's contents doesn't match the source");
-		}
-	}
 }
 
 void PmergeMe::fillJacobstahl(size_t sz) {
