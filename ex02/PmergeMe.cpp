@@ -41,19 +41,20 @@ void PmergeMe::mergeSort(char** begin, char** end) {
 	}
 	_size = end - begin;
 	_stl_sorted = vector<int>(_size);
-	cout << "Before: ";
 	for (int i = 0; begin + i != end; i ++) {
-		cout << *(begin + i) << " ";
 		_stl_sorted.at(i) = atoi(*(begin + i));
 	}
-	cout << endl;
 	std::sort(_stl_sorted.begin(), _stl_sorted.end());
 	
 	vector<int> sortedv = vector_mergeSort(begin, end);
 	assertSorted(sortedv);
 	list<int> sortedl = list_mergeSort(begin, end);
 	assertSorted(sortedl);
-	cout << "After: ";
+	cout << "Before: ";
+	for (int i = 0; begin + i != end; i ++) {
+		cout << *(begin + i) << " ";
+	}
+	cout << endl << "After: ";
 	for (
 		list<int>::iterator i = sortedl.begin();
 		i != sortedl.end();

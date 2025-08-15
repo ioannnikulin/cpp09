@@ -1,6 +1,7 @@
 #include <cmath>
 #include <ctime>
 #include <list>
+#include <stdexcept>
 
 #include "PmergeMe.hpp"
 
@@ -11,6 +12,9 @@ list<int> PmergeMe::list_mergeSort(char** begin, char** end) {
 	for (size_t i = 0; begin != end; ++begin, ++i) {
 		intm item;
 		item.v = atoi(*begin);
+		if (item.v < 0) {
+			throw std::invalid_argument("Negative numbers are not allowed");
+		}
 		item.origPos = i;
 		vec.push_back(item);
 	}

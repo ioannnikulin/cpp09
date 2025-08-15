@@ -1,6 +1,7 @@
 #include <cmath>
 #include <ctime>
 #include <vector>
+#include <stdexcept>
 
 #include "PmergeMe.hpp"
 
@@ -11,6 +12,9 @@ vector<int> PmergeMe::vector_mergeSort(char** begin, char** end) {
 	for (size_t i = 0; begin != end; ++begin, ++i) {
 		vec.at(i).v = atoi(*begin);
 		vec.at(i).origPos = i;
+		if (vec.at(i).v < 0) {
+			throw std::invalid_argument("Negative numbers are not allowed");
+		}
 	}
 	clock_t startTime = clock();
 	vector<intm> sorted = doSort(vec, 0);
